@@ -1,0 +1,28 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.title {
+    color: red;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+
+.treetleField td {
+    border: solid 2px;
+    border-color: red;
+    padding: 3em;
+}
+
+.battleField td {
+    border: black solid 2px;
+    padding: 3em;
+}
+

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>SeeBattle</title>
+    <link href="style.css" rel="stylesheet">
+    <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+    <h2 class="title">Самый лучший морской бой</h2>
+
+    <h3>Наше поле:</h3>
+
+    <table class="treetleField">
+        <tbody>
+        <tr>
+            <td class="treetle" id="a11"></td>
+            <td class="treetle" id="a12"></td>
+            <td class="treetle" id="a13"></td>
+            <td class="treetle" id="a14"></td>
+            <td class="treetle" id="a15"></td>
+        </tr>
+        <tr>
+            <td class="treetle" id="a21"></td>
+            <td class="treetle" id="a22"></td>
+            <td class="treetle" id="a23"></td>
+            <td class="treetle" id="a24"></td>
+            <td class="treetle" id="a25"></td>
+        </tr>
+        <tr>
+            <td class="treetle" id="a31"></td>
+            <td class="treetle" id="a32"></td>
+            <td class="treetle" id="a33"></td>
+            <td class="treetle" id="a34"></td>
+            <td class="treetle" id="a35"></td>
+        </tr>
+        <tr>
+            <td class="treetle" id="a41"></td>
+            <td class="treetle" id="a42"></td>
+            <td class="treetle" id="a43"></td>
+            <td class="treetle" id="a44"></td>
+            <td class="treetle" id="a45"></td>
+        </tr>
+        <tr>
+            <td class="treetle" id="a51"></td>
+            <td class="treetle" id="a52"></td>
+            <td class="treetle" id="a53"></td>
+            <td class="treetle" id="a54"></td>
+            <td class="treetle" id="a55"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <div id="display"></div>
+    <h3>Поле соперника:</h3>
+    <br>
+
+    <table class="battleField">
+        <tbody>
+        <tr>
+            <td class="battle" id="e11"></td>
+            <td class="battle" id="e12"></td>
+            <td class="battle" id="e13"></td>
+            <td class="battle" id="e14"></td>
+            <td class="battle" id="e15"></td>
+        </tr>
+        <tr>
+            <td class="battle" id="e21"></td>
+            <td class="battle" id="e22"></td>
+            <td class="battle" id="e23"></td>
+            <td class="battle" id="e24"></td>
+            <td class="battle" id="e25"></td>
+        </tr>
+        <tr>
+            <td class="battle" id="e31"></td>
+            <td class="battle" id="e32"></td>
+            <td class="battle" id="e33"></td>
+            <td class="battle" id="e34"></td>
+            <td class="battle" id="e35"></td>
+        </tr>
+        <tr>
+            <td class="battle" id="e41"></td>
+            <td class="battle" id="e42"></td>
+            <td class="battle" id="e43"></td>
+            <td class="battle" id="e44"></td>
+            <td class="battle" id="e45"></td>
+        </tr>
+        <tr>
+            <td class="battle" id="e51"></td>
+            <td class="battle" id="e52"></td>
+            <td class="battle" id="e53"></td>
+            <td class="battle" id="e54"></td>
+            <td class="battle" id="e55"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(function () {
+        shipsCount = 0;
+        ships = [];
+        enemyShips = [];
+        enemyShootingHistory = [];
+        placeShips(5);
+
+    });
+
+    function placeShips(num) {
+        $('.treetle').click(function () {
+
+            if ($.inArray($(this).attr('id'), ships) === -1) {
+                $(this).css('background-color', 'lightskyblue');
+                ships.push($(this).attr('id'));
+                shipsCount++;
+            }
+
+            if (shipsCount === num) {
+                $('.treetle').unbind();
+                console.log(ships);
+                placeEnemyShips(num);
+                play(num);
+            }
+        });
+    }
+
+    function placeEnemyShips(num) {
+        let enemyShip;
+        let enemyShipsCount = 0;
+
+        while (enemyShipsCount < num) {
+
+            enemyShip = generateEnemyShip();
+
+            if ($.inArray(enemyShip, enemyShips) === -1) {
+                enemyShips.push(enemyShip);
+                enemyShipsCount++;
+            }
+        }
+        console.log(enemyShips);
+    }
+
+    function generateEnemyShip() {
+        let i, j;
+        i = 1 + Math.floor(Math.random() * 5);
+        j = 1 + Math.floor(Math.random() * 5);
+        return 'e' + i + j;
+    }
+
+    function enemyShoot() {
+        let i, j;
+
+        i = 1 + Math.floor(Math.random() * 5);
+        j = 1 + Math.floor(Math.random() * 5);
+        return 'a' + i + j;
+    }
+
+    function play(num) {
+        let player = 0,
+            enemy = 0,
+            enemyShootPos;
+
+        $('.battle').click(function () {
+
+
+            if ('rgb(255, 0, 0)' !== $(this).css('background-color')) {
+                $(this).css('background-color', 'khaki');
+            }
+
+            if ($.inArray($(this).attr('id'), enemyShips) !== -1) {
+
+                player++;
+                enemyShips.splice(enemyShips.indexOf($(this).attr('id')), 1);
+                $(this).css('background-color', 'red');
+
+                if (player === num) {
+                    $('.battle').unbind();
+                    $('#display').html('Игрок победил');
+                }
+            }
+
+            setTimeout(function(){
+
+                do {
+                    enemyShootPos = enemyShoot();
+                } while ($.inArray(enemyShootPos, enemyShootingHistory) !== -1);
+                enemyShootingHistory.push(enemyShootPos);
+
+                if ('rgb(255, 0, 0)' !== $('#' + enemyShootPos).css('background-color')) {
+
+                    $('#' + enemyShootPos).css('background-color', 'khaki');
+                }
+
+                if ($.inArray(enemyShootPos, ships) !== -1) {
+
+                    enemy++;
+                    ships.splice(ships.indexOf(enemyShootPos), 1);
+                    $('#' + enemyShootPos).css('background-color', 'red');
+
+                    if (enemy === num) {
+                        $('.battle').unbind();
+                        $('#display').html('Компьютер победил');
+                    }
+                }
+
+            }, 1000);
+
+
+
+        });
+
+    }
+</script>
+
+</body>
+</html>
