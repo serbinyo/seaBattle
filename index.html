@@ -179,7 +179,8 @@
 
                 if (player === num) {
                     $('.battle').unbind();
-                    $('#display').html('Игрок победил');
+                    $('#display').css('color', 'green').html('Игрок победил');
+                    return;
                 }
             }
 
@@ -203,7 +204,8 @@
 
                     if (enemy === num) {
                         $('.battle').unbind();
-                        $('#display').html('Компьютер победил');
+                        $('#display').css('color', 'blue').html('Компьютер победил');
+                        return;
                     }
                 }
 
